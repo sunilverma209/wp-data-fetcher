@@ -29,12 +29,11 @@ class AjaxHandler implements AjaxHandlerInterface {
         add_action( 'wp_data_fetcher_cron_hook', [ $this, 'fetch_and_cache_data' ] );
     }
 
-
     /**
      * Get data from the cache or fetch from the remote API if not available.
      *
      * @return void
-     */    
+     */
     public function get_data() {
         $data = $this->cache->get( 'wp_data_fetcher_data' );
 
@@ -46,12 +45,11 @@ class AjaxHandler implements AjaxHandlerInterface {
         wp_send_json_success( $data );
     }
 
-
     /**
      * Fetch data from the remote API and cache it.
      *
      * @return void
-     */    
+     */
     public function fetch_and_cache_data() {
         $data = $this->dataFetcher->fetch();
         $this->cache->set( 'wp_data_fetcher_data', $data, HOUR_IN_SECONDS );

@@ -66,13 +66,14 @@ class AdminPage {
      */
     public function render_admin_page() {
         $data = $this->cache->get( 'wp_data_fetcher_data' );
-
+    
         if ( false === $data ) {
             $data = [];
         }
-
+    
         echo '<div class="wrap">';
         echo '<h1>' . esc_html__( 'Data Fetcher', 'wp-data-fetcher' ) . '</h1>';
+        echo '<div id="data-table">';
         echo '<table class="wp-list-table widefat fixed striped">';
         echo '<thead><tr>';
         echo '<th>' . esc_html__( 'Column 1', 'wp-data-fetcher' ) . '</th>';
@@ -87,7 +88,9 @@ class AdminPage {
         }
         echo '</tbody>';
         echo '</table>';
+        echo '</div>';
         echo '<button id="refresh-data" class="button button-primary">' . esc_html__( 'Refresh Data', 'wp-data-fetcher' ) . '</button>';
         echo '</div>';
     }
+    
 }
