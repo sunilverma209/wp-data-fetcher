@@ -15,6 +15,8 @@ class Block {
      */
     public function __construct() {
         add_action( 'init', [ $this, 'register_block' ] );
+        add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_assets' ] );
+		add_action( 'enqueue_block_assets', [ $this, 'enqueue_assets' ] );
     }
 
     /**
@@ -28,34 +30,35 @@ class Block {
             return;
         }
 
-        wp_register_script(
-            'wp-data-fetcher-block',
-            WP_DATA_FETCHER_PLUGIN_URL . 'build/block.build.js',
-            [ 'wp-blocks', 'wp-element', 'wp-editor' ],
-            WP_DATA_FETCHER_VERSION,
-            true
-        );
-
-        wp_register_style(
-            'wp-data-fetcher-block-editor',
-            WP_DATA_FETCHER_PLUGIN_URL . 'build/block.editor.build.css',
-            [ 'wp-edit-blocks' ],
-            WP_DATA_FETCHER_VERSION
-        );
-
-        wp_register_style(
-            'wp-data-fetcher-block',
-            WP_DATA_FETCHER_PLUGIN_URL . 'build/block.style.build.css',
-            [ 'wp-blocks' ],
-            WP_DATA_FETCHER_VERSION
-        );
-
         register_block_type('sunil/data-fetcher-block', [
             'editor_script' => 'wp-data-fetcher-block',
             'editor_style' => 'wp-data-fetcher-block-editor',
             'style' => 'wp-data-fetcher-block',
         ]);
     }
+
+    /**
+	 * Enqueue Frontend Assets
+	 *
+	 * @return void
+	 */
+	public function enqueue_assets(): void {
+
+        wp_enqueue_script(
+            'wp-data-fetcher-block',
+            WP_DATA_FETCHER_PLUGIN_URL . 'build/block.build.js',
+            [ 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components' ],
+            WP_DATA_FETCHER_VERSION,
+            true
+        );
+
+        wp_enqueue_style (
+            'wp-data-fetcher-block-style',
+            WP_DATA_FETCHER_PLUGIN_URL . 'build/build.block.css',
+            [],
+            WP_DATA_FETCHER_VERSION
+        );
+	}
 
     /**
      * Render the Gutenberg block content.

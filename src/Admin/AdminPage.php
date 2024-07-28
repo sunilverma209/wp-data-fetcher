@@ -60,7 +60,7 @@ class AdminPage {
 
         wp_enqueue_style(
             'wp-data-fetcher-admin-css',
-            WP_DATA_FETCHER_PLUGIN_URL . 'assets/css/admin.css',
+            WP_DATA_FETCHER_PLUGIN_URL . 'build/build.admin.css',
             [],
             WP_DATA_FETCHER_VERSION
         );

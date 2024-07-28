@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 
 const Edit = (props) => {
     const { attributes, setAttributes } = props;
-    const { data, columns } = attributes;
+    const { data, columns, title } = attributes;
     const blockProps = useBlockProps();
     const [availableColumns, setAvailableColumns] = useState([]);
     const [columnMapping, setColumnMapping] = useState({});
@@ -24,9 +24,12 @@ const Edit = (props) => {
             .then(response => response.json())
             .then(responseData => {
                 if (responseData.success) {
+
                     const fetchedData = responseData.data.data.rows;
                     const headers = responseData.data.data.headers;
-                    setAttributes({ data: fetchedData });
+                    const fetchedTitle = responseData.data.title;
+
+                    setAttributes({ data: fetchedData , title: fetchedTitle });
 
                     // Map headers to row keys
                     const mapping = {
@@ -43,8 +46,8 @@ const Edit = (props) => {
                     setAvailableColumns(headers);
 
                     // Initialize columns visibility if not already set
-                    if (Object.keys(columns).length === 0) {
-                        const initialColumns = headers.reduce((acc, col) => {
+                    if ( Object.keys(columns).length === 0 ) {
+                        const initialColumns = headers.reduce(( acc, col ) => {
                             acc[col] = true;
                             return acc;
                         }, {});
@@ -74,20 +77,25 @@ const Edit = (props) => {
                     ))}
                 </PanelBody>
             </InspectorControls>
-            <table>
-                <thead>
-                    <tr>
-                        {availableColumns.map((col) => columns[col] && <th key={col}>{col}</th>)}
-                    </tr>
-                </thead>
-                <tbody>
-                    {Object.keys(data).map((rowKey, rowIndex) => (
-                        <tr key={rowIndex}>
-                            {availableColumns.map((col) => columns[col] && <td key={col}>{data[rowKey][columnMapping[col]]}</td>)}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <div className='sv-data-fetcher-block'>
+                <div className='sv-data-fetcher-block__inner'>
+                    <h2>{ title ?? '' }</h2>
+                    <table className='wp-list-table widefat fixed striped'>
+                        <thead>
+                            <tr>
+                                {availableColumns.map((col) => columns[col] && <th key={col}>{col}</th>)}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Object.keys(data).map((rowKey, rowIndex) => (
+                                <tr key={rowIndex}>
+                                    {availableColumns.map((col) => columns[col] && <td key={col}>{data[rowKey][columnMapping[col]]}</td>)}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 };
