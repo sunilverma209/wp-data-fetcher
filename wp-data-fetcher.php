@@ -17,6 +17,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use SUNIL\Plugins\WpDataFetcher\Admin\AdminPage;
 use SUNIL\Plugins\WpDataFetcher\AjaxHandler;
 use SUNIL\Plugins\WpDataFetcher\Block;
+use SUNIL\Plugins\WpDataFetcher\CLICommand;
 
 // Define plugin constants
 define( 'WP_DATA_FETCHER_VERSION', '1.0.0' );
@@ -47,6 +48,7 @@ class WpDataFetcher {
         new AjaxHandler();
         new AdminPage();
         new Block();
+        new CLICommand();
     }
 }
 
