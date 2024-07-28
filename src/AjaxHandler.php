@@ -23,6 +23,7 @@ class AjaxHandler implements AjaxHandlerInterface {
     public function __construct() {
         $this->cache = new Cache();
         $this->dataFetcher = new DataFetcher();
+        
         add_action( 'wp_ajax_nopriv_wp_data_fetcher_get_data', [ $this, 'get_data' ] );
         add_action( 'wp_ajax_wp_data_fetcher_get_data', [ $this, 'get_data' ] );
         add_action( 'wp_data_fetcher_cron_hook', [ $this, 'fetch_and_cache_data' ] );

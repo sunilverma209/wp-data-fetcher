@@ -14,7 +14,14 @@ use SUNIL\Plugins\WpDataFetcher\Interfaces\DataFetcherInterface;
 class DataFetcher implements DataFetcherInterface {
     
     public function fetch() {
-        $response = wp_remote_get( 'https://miusage.com/v1/challenge/1/' );
+
+        /**
+         * Fetch data from the remote API.
+         *
+         * @return array
+         */
+
+        $response = wp_remote_get( WP_DATA_FETCHER_REMOTE_URL );
 
         if ( is_wp_error( $response ) ) {
             return [];
