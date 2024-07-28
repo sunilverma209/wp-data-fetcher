@@ -1,33 +1,40 @@
-jQuery(document).ready(function ($) {
-    console.log('ready2');
-    $('#refresh-data').on('click', function () {
-        console.log('hit455');
+jQuery( document ).ready(function ($) {
 
+    $( '#refresh-data' ).on('click', function () {
         $.post(WpDataFetcher.ajax_url, {
             action: 'wp_data_fetcher_get_data',
             _ajax_nonce: WpDataFetcher.nonce
-        }, function (response) {
-            if (response.success) {
-                var data = response.data;
+        }, function ( response ) {
+            if ( response.success ) {
 
-                var table = '<table class="wp-list-table widefat fixed striped">';
+                var data = response.data;
+                var title = data.title;
+                var headers = data.data.headers;
+                var rows = data.data.rows;
+
+                var table = '<h2>' + title + '</h2>';
+                table += '<table class="wp-list-table widefat fixed striped">';
                 table += '<thead><tr>';
 
-                for (var key in data[0]) {
-                    table += '<th>' + key + '</th>';
-                }
+                headers.forEach(function (header) {
+                    table += '<th>' + header + '</th>';
+                });
 
                 table += '</tr></thead><tbody>';
-                data.forEach(function (row) {
+
+                for (var rowId in rows) {
+                    var row = rows[rowId];
                     table += '<tr>';
                     for (var key in row) {
                         table += '<td>' + row[key] + '</td>';
                     }
                     table += '</tr>';
-                });
+                }
+
                 table += '</tbody></table>';
                 $('#data-table').html(table);
             }
         });
     });
+    
 });

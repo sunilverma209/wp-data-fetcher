@@ -67,30 +67,39 @@ class AdminPage {
     public function render_admin_page() {
         $data = $this->cache->get( 'wp_data_fetcher_data' );
     
-        if ( false === $data ) {
-            $data = [];
-        }
-    
         echo '<div class="wrap">';
         echo '<h1>' . esc_html__( 'Data Fetcher', 'wp-data-fetcher' ) . '</h1>';
         echo '<div id="data-table">';
-        echo '<table class="wp-list-table widefat fixed striped">';
-        echo '<thead><tr>';
-        echo '<th>' . esc_html__( 'Column 1', 'wp-data-fetcher' ) . '</th>';
-        echo '<th>' . esc_html__( 'Column 2', 'wp-data-fetcher' ) . '</th>';
-        echo '</tr></thead>';
-        echo '<tbody>';
-        foreach ( $data as $item ) {
-            echo '<tr>';
-            echo '<td>' . esc_html( $item['column1'] ) . '</td>';
-            echo '<td>' . esc_html( $item['column2'] ) . '</td>';
-            echo '</tr>';
+        
+        if ( $data ) {
+            $table_title = $data['title'] ?? 'Data Table';
+            $headers = $data['data']['headers'] ?? [];
+            $rows = $data['data']['rows'] ?? [];
+    
+            echo '<h2>' . esc_html( $table_title ) . '</h2>';
+            echo '<table class="wp-list-table widefat fixed striped">';
+            echo '<thead><tr>';
+    
+            foreach ( $headers as $header ) {
+                echo '<th>' . esc_html( $header ) . '</th>';
+            }
+    
+            echo '</tr></thead><tbody>';
+    
+            foreach ( $rows as $row ) {
+                echo '<tr>';
+                foreach ( $row as $cell ) {
+                    echo '<td>' . esc_html( $cell ) . '</td>';
+                }
+                echo '</tr>';
+            }
+    
+            echo '</tbody></table>';
         }
-        echo '</tbody>';
-        echo '</table>';
+    
         echo '</div>';
         echo '<button id="refresh-data" class="button button-primary">' . esc_html__( 'Refresh Data', 'wp-data-fetcher' ) . '</button>';
         echo '</div>';
     }
-    
+        
 }

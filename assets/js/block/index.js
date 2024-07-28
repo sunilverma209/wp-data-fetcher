@@ -17,11 +17,7 @@ if ( !getBlockType( 'sunil/data-fetcher-block' ) ) {
             },
             columns: {
                 type: 'object',
-                default: {
-                    column1: true,
-                    column2: true,
-                    column3: true
-                }
+                default: []
             }
         },
         edit: Edit,

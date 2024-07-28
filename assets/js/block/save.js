@@ -5,22 +5,28 @@ const Save = (props) => {
     const { data, columns } = attributes;
     const blockProps = useBlockProps.save();
 
+    const availableColumns = Object.keys(columns).filter(col => columns[col]);
+
+    const columnMapping = {
+        'ID': 'id',
+        'First Name': 'fname',
+        'Last Name': 'lname',
+        'Email': 'email',
+        'Date': 'date'
+    };
+
     return (
         <div {...blockProps}>
             <table>
                 <thead>
                     <tr>
-                        {columns.column1 && <th>Column 1</th>}
-                        {columns.column2 && <th>Column 2</th>}
-                        {columns.column3 && <th>Column 3</th>}
+                        {availableColumns.map((col) => <th key={col}>{col}</th>)}
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((row, index) => (
-                        <tr key={index}>
-                            {columns.column1 && <td>{row.column1}</td>}
-                            {columns.column2 && <td>{row.column2}</td>}
-                            {columns.column3 && <td>{row.column3}</td>}
+                    {Object.keys(data).map((rowKey, rowIndex) => (
+                        <tr key={rowIndex}>
+                            {availableColumns.map((col) => columns[col] && <td key={col}>{data[rowKey][columnMapping[col]]}</td>)}
                         </tr>
                     ))}
                 </tbody>

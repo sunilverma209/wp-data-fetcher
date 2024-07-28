@@ -29,7 +29,7 @@ define( 'WP_DATA_FETCHER_REMOTE_URL', 'https://miusage.com/v1/challenge/1/' );
  * 
  * This class is used to intialise all the main handlers
  */
-class DataFetcher {
+class WpDataFetcher {
 
     /**
      * Constructor to initialize the plugin.
@@ -53,4 +53,4 @@ class DataFetcher {
 /**
  * Initialize the plugin.
  */
-new DataFetcher();
+new WpDataFetcher();

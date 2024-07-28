@@ -7,50 +7,83 @@ const Edit = (props) => {
     const { attributes, setAttributes } = props;
     const { data, columns } = attributes;
     const blockProps = useBlockProps();
-    
+    const [availableColumns, setAvailableColumns] = useState([]);
+    const [columnMapping, setColumnMapping] = useState({});
+
     useEffect(() => {
-        // Fetch data from the AJAX endpoint
-        fetch( '/wp-json/sunil/data-fetcher/v1/get-data')
+        fetch(WpDataFetcher.ajax_url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                action: 'wp_data_fetcher_get_data',
+                _ajax_nonce: WpDataFetcher.nonce,
+            }),
+        })
             .then(response => response.json())
-            .then(fetchedData => setAttributes({ data: fetchedData }))
+            .then(responseData => {
+                if (responseData.success) {
+                    const fetchedData = responseData.data.data.rows;
+                    const headers = responseData.data.data.headers;
+                    setAttributes({ data: fetchedData });
+
+                    // Map headers to row keys
+                    const mapping = {
+                        'ID': 'id',
+                        'First Name': 'fname',
+                        'Last Name': 'lname',
+                        'Email': 'email',
+                        'Date': 'date'
+                    };
+
+                    setColumnMapping(mapping);
+
+                    // Dynamically set available columns based on the fetched data headers
+                    setAvailableColumns(headers);
+
+                    // Initialize columns visibility if not already set
+                    if (Object.keys(columns).length === 0) {
+                        const initialColumns = headers.reduce((acc, col) => {
+                            acc[col] = true;
+                            return acc;
+                        }, {});
+                        setAttributes({ columns: initialColumns });
+                    }
+                }
+            })
             .catch(error => console.error('Error fetching data:', error));
     }, []);
-    
+
+    const toggleColumnVisibility = (column) => {
+        const newColumns = { ...columns, [column]: !columns[column] };
+        setAttributes({ columns: newColumns });
+    };
+
     return (
         <div {...blockProps}>
             <InspectorControls>
                 <PanelBody title={__('Column Visibility', 'wp-data-fetcher')}>
-                    <CheckboxControl
-                        label={__('Column 1', 'wp-data-fetcher')}
-                        checked={columns.column1}
-                        onChange={(value) => setAttributes({ columns: { ...columns, column1: value } })}
-                    />
-                    <CheckboxControl
-                        label={__('Column 2', 'wp-data-fetcher')}
-                        checked={columns.column2}
-                        onChange={(value) => setAttributes({ columns: { ...columns, column2: value } })}
-                    />
-                    <CheckboxControl
-                        label={__('Column 3', 'wp-data-fetcher')}
-                        checked={columns.column3}
-                        onChange={(value) => setAttributes({ columns: { ...columns, column3: value } })}
-                    />
+                    {availableColumns.map((col) => (
+                        <CheckboxControl
+                            key={col}
+                            label={col}
+                            checked={columns[col]}
+                            onChange={() => toggleColumnVisibility(col)}
+                        />
+                    ))}
                 </PanelBody>
             </InspectorControls>
             <table>
                 <thead>
                     <tr>
-                        {columns.column1 && <th>{__('Column 1', 'wp-data-fetcher')}</th>}
-                        {columns.column2 && <th>{__('Column 2', 'wp-data-fetcher')}</th>}
-                        {columns.column3 && <th>{__('Column 3', 'wp-data-fetcher')}</th>}
+                        {availableColumns.map((col) => columns[col] && <th key={col}>{col}</th>)}
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((row, index) => (
-                        <tr key={index}>
-                            {columns.column1 && <td>{row.column1}</td>}
-                            {columns.column2 && <td>{row.column2}</td>}
-                            {columns.column3 && <td>{row.column3}</td>}
+                    {Object.keys(data).map((rowKey, rowIndex) => (
+                        <tr key={rowIndex}>
+                            {availableColumns.map((col) => columns[col] && <td key={col}>{data[rowKey][columnMapping[col]]}</td>)}
                         </tr>
                     ))}
                 </tbody>
