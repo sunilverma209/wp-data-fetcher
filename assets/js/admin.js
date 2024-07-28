@@ -32,7 +32,7 @@ jQuery( document ).ready(function ($) {
                 }
 
                 table += '</tbody></table>';
-                $('#data-table').html(table);
+                $('#sv-data-fetcher__table').html(table);
             }
         });
     });

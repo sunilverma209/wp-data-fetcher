@@ -57,6 +57,13 @@ class AdminPage {
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'nonce' => wp_create_nonce( 'wp_data_fetcher_nonce' ),
         ] );
+
+        wp_enqueue_style(
+            'wp-data-fetcher-admin-css',
+            WP_DATA_FETCHER_PLUGIN_URL . 'assets/css/admin.css',
+            [],
+            WP_DATA_FETCHER_VERSION
+        );
     }
 
     /**
@@ -67,15 +74,19 @@ class AdminPage {
     public function render_admin_page() {
         $data = $this->cache->get( 'wp_data_fetcher_data' );
     
-        echo '<div class="wrap">';
-        echo '<h1>' . esc_html__( 'Data Fetcher', 'wp-data-fetcher' ) . '</h1>';
-        echo '<div id="data-table">';
+        echo '<div class="wrap" id="sv-data-fetcher">';
+        echo '<div id="sv-data-fetcher__header"><img src="'.WP_DATA_FETCHER_PLUGIN_URL.'assets/images/logo.svg" /></div>';
+        echo '<div id="sv-data-fetcher__title">';
+        echo '<a href="#" class="active">API Data</a>';
+        echo '</div>';
+        echo '<div id="sv-data-fetcher__content">';
         
         if ( $data ) {
             $table_title = $data['title'] ?? 'Data Table';
             $headers = $data['data']['headers'] ?? [];
             $rows = $data['data']['rows'] ?? [];
     
+            echo '<div id="sv-data-fetcher__table">';
             echo '<h2>' . esc_html( $table_title ) . '</h2>';
             echo '<table class="wp-list-table widefat fixed striped">';
             echo '<thead><tr>';
@@ -95,10 +106,14 @@ class AdminPage {
             }
     
             echo '</tbody></table>';
+            echo '</div>';
         }
     
+        echo '<div id="sv-data-fetcher__action">';
+        echo '<button id="refresh-data" class="button button-primary sv-btn-orange">' . esc_html__( 'Refresh Data', 'wp-data-fetcher' ) . '</button>';
         echo '</div>';
-        echo '<button id="refresh-data" class="button button-primary">' . esc_html__( 'Refresh Data', 'wp-data-fetcher' ) . '</button>';
+        echo '</div>';
+
         echo '</div>';
     }
         

@@ -1,0 +1,70 @@
+
+#sv-data-fetcher {
+    margin: 0px;
+    margin-left: -20px;
+}
+
+#sv-data-fetcher__header {
+    border-top: 3px solid #e27730;
+    padding: 24px 20px;
+}
+
+#sv-data-fetcher__header img {
+    display: block;
+    margin: 0;
+    max-width: 242px;
+}
+
+#sv-data-fetcher__title {
+    min-height: 58px;
+    background-color: #fff;
+    font-size: 14px;
+    margin: 0 0 20px 0;
+    padding: 0 20px;
+}
+
+#sv-data-fetcher__title a {
+    border-bottom: 3px solid #fff;
+    box-shadow: none;
+    color: #666;
+    display: inline-block;
+    margin-right: 30px;
+    padding: 20px 0 17px 0;
+    text-decoration: none;
+}
+
+#sv-data-fetcher__title a.active {
+    border-color: #e27730;
+}
+
+#sv-data-fetcher__table {
+    padding: 24px 20px;
+}
+
+#sv-data-fetcher__table h2 {
+    color: #2c3337;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+}
+
+#sv-data-fetcher .sv-btn-orange {
+    background-color: #e27730;
+    border-color: #e27730;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 9px 15px;
+    min-height: 36px;
+    line-height: 16px;
+    border-width: 1px;
+    border-style: solid;
+}
+
+#sv-data-fetcher__action {
+    padding: 0 20px;
+}
+
+#sv-data-fetcher__table thead tr > th {
+    font-weight: bold;
+}

@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Data Fetcher - API Based
+ * Plugin Name: Sunil Verma Data Fetcher - API Based
  * Description: A plugin to fetch data from a remote API and display it in a custom Gutenberg block and admin page.
  * Version: 1.0.0
  * Author: Sunil Verma
