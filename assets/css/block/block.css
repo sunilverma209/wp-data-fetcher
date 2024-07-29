@@ -3,7 +3,8 @@
     padding: 15px;
 }
 
-.sv-data-fetcher-block__inner h2 {
+.sv-data-fetcher-block__inner h2,
+.editor-styles-wrapper .sv-data-fetcher-block__inner h2 {
     font-size: 22px;
     line-height: 24px;
     font-weight: bold;

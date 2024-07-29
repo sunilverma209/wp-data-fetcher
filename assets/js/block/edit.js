@@ -9,6 +9,7 @@ const Edit = (props) => {
     const blockProps = useBlockProps();
     const [availableColumns, setAvailableColumns] = useState([]);
     const [columnMapping, setColumnMapping] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         fetch(WpDataFetcher.ajax_url, {
@@ -28,6 +29,10 @@ const Edit = (props) => {
                     const fetchedData = responseData.data.data.rows;
                     const headers = responseData.data.data.headers;
                     const fetchedTitle = responseData.data.title;
+
+                    // console.log('Edit Fetched Data:', fetchedData);
+                    // console.log('Edit Fetched Title:', fetchedTitle);
+                    // console.log('Edit Fetched Headers:', headers);
 
                     setAttributes({ data: fetchedData , title: fetchedTitle });
 
@@ -52,16 +57,26 @@ const Edit = (props) => {
                             return acc;
                         }, {});
                         setAttributes({ columns: initialColumns });
+                        //console.log('Edit Initial Columns:', initialColumns);
                     }
+
+                    setIsLoading(false);
                 }
             })
-            .catch(error => console.error('Error fetching data:', error));
+            .catch(error => {
+                //console.error('Error fetching data:', error);
+                setIsLoading(false);
+            });
     }, []);
 
     const toggleColumnVisibility = (column) => {
         const newColumns = { ...columns, [column]: !columns[column] };
         setAttributes({ columns: newColumns });
     };
+
+    if (isLoading) {
+        return <div {...blockProps}>{__('Loading...', 'wp-data-fetcher')}</div>;
+    }
 
     return (
         <div {...blockProps}>

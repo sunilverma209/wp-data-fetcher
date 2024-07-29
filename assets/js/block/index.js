@@ -17,10 +17,14 @@ if ( !getBlockType( 'sunil/data-fetcher-block' ) ) {
             },
             columns: {
                 type: 'object',
-                default: []
+                default: {}
+            },
+            title: {
+                type: 'string',
+                default: ''
             }
         },
         edit: Edit,
-        save: Save
+        save: () => null,
     });
 }
